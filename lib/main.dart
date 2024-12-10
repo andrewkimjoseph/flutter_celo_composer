@@ -29,29 +29,31 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final appKitModalAsync = ref.watch(appKitModalProvider(context));
+    final connectionStatusAsync = ref.watch(appKitConnectionProvider(context));
 
-    return appKitModalAsync.when(
-      data: (appKitModal) {
-        final connectionStatusAsync =
-            ref.watch(appKitConnectionProvider(context));
-
-        return Scaffold(
-          appBar: AppBar(
-            title: SvgPicture.asset(
-              "assets/celo-long-form-logo.svg",
-              semanticsLabel: 'Dart Logo',
-              width: 100,
+    return Scaffold(
+      appBar: AppBar(
+        title: SvgPicture.asset(
+          "assets/celo-long-form-logo.svg",
+          semanticsLabel: 'Celo Logo',
+          width: 100,
+        ),
+        backgroundColor: Colors.yellow,
+        centerTitle: true,
+        actions: [
+          appKitModalAsync.when(
+            data: (appKitModal) => Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: AppKitModalConnectButton(appKit: appKitModal),
             ),
-            backgroundColor: Colors.yellow,
-            centerTitle: true,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: AppKitModalConnectButton(appKit: appKitModal),
-              ),
-            ],
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
           ),
-          body: connectionStatusAsync.when(
+        ],
+      ),
+      body: appKitModalAsync.when(
+        data: (appKitModal) {
+          return connectionStatusAsync.when(
             data: (isConnected) => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -77,14 +79,11 @@ class _MyAppState extends ConsumerState<MyApp> {
             ),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stack) => Center(child: Text('Error: $error')),
-          ),
-        );
-      },
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (error, stack) => Scaffold(
-        body: Center(child: Text('Error initializing: $error')),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) =>
+            Center(child: Text('Error initializing: $error')),
       ),
     );
   }
