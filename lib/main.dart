@@ -1,68 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_celo_composer/providers/modal_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:reown_appkit/reown_appkit.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MaterialApp(home: MyApp()),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+class _MyAppState extends ConsumerState<MyApp> {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void initState() {
+    super.initState();
+    // You can add any initialization logic here if needed
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    final appKitModalAsync = ref.watch(appKitModalProvider(context));
+
+    return appKitModalAsync.when(
+      data: (appKitModal) {
+        final connectionStatusAsync =
+            ref.watch(appKitConnectionProvider(context));
+
+        return Scaffold(
+          appBar: AppBar(
+            title: SvgPicture.asset(
+              "assets/celo-long-form-logo.svg",
+              semanticsLabel: 'Dart Logo',
+              width: 100,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            backgroundColor: Colors.yellow,
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: AppKitModalConnectButton(appKit: appKitModal),
+              ),
+            ],
+          ),
+          body: connectionStatusAsync.when(
+            data: (isConnected) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    isConnected ? 'Connected to Wallet' : 'Not Connected',
+                    style: TextStyle(
+                      color: isConnected ? Colors.green : Colors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  if (isConnected) ...[
+                    AppKitModalNetworkSelectButton(appKit: appKitModal),
+                    const SizedBox(height: 10),
+                    AppKitModalAccountButton(
+                      appKitModal: appKitModal,
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ],
-        ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(child: Text('Error: $error')),
+          ),
+        );
+      },
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      error: (error, stack) => Scaffold(
+        body: Center(child: Text('Error initializing: $error')),
       ),
     );
   }
