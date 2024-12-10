@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_celo_composer/providers/modal_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:reown_appkit/reown_appkit.dart';
+
+import 'providers/modal_provider.dart';
+import 'services/check_cusd_balance.dart';
+import 'widgets/custom_alert.dart';
 
 void main() {
   runApp(
@@ -23,7 +26,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     super.initState();
-    // You can add any initialization logic here if needed
   }
 
   @override
@@ -56,14 +58,16 @@ class _MyAppState extends ConsumerState<MyApp> {
           return connectionStatusAsync.when(
             data: (isConnected) => Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    isConnected ? 'Connected to Wallet' : 'Not Connected',
-                    style: TextStyle(
-                      color: isConnected ? Colors.green : Colors.red,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      isConnected ? 'Connected to Wallet' : 'Not Connected',
+                      style: TextStyle(
+                        color: isConnected ? Colors.green : Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -73,6 +77,23 @@ class _MyAppState extends ConsumerState<MyApp> {
                     AppKitModalAccountButton(
                       appKitModal: appKitModal,
                     ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          final balance = await checkcUSDBalance(appKitModal);
+
+                          if (context.mounted) {
+                            await showDialog<void>(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) {
+                                return CustomPopUpWidget(
+                                  popUpText: "Your cUSD Balance is $balance",
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: const Text('Check cUSD Balance'))
                   ],
                 ],
               ),
