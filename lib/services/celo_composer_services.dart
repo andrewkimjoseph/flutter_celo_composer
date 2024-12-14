@@ -1,4 +1,4 @@
-import 'package:flutter_celo_composer/constants/chain_ids.dart';
+import 'package:flutter_celo_composer/constants/chains.dart';
 import 'package:flutter_celo_composer/constants/contracts/cusd_contract_alfajores.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 import 'package:flutter_celo_composer/constants/contracts/cusd_contract_mainnet.dart';
@@ -19,19 +19,18 @@ class CeloComposerServices {
     final balanceOf = await appKit.requestReadContract(
       deployedContract: cUSDContractMainnet,
       topic: appKit.session!.topic,
-      chainId: ChainIds.celoMainnet,
+      chainId: Chains.celoMainnet.chainId,
       sender: senderWalletAddress,
       functionName: 'balanceOf',
       parameters: [senderWalletAddress],
     );
 
-    if (balanceOf.isEmpty) return double.parse('0');
+    if (balanceOf.isEmpty) return 0.0;
 
     final cUSDBalanceBigInt =
         BigInt.from(int.parse(balanceOf.first.toString()));
 
-    final cUSDBalance =
-        BigInt.from(cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
+    final cUSDBalance = (cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
 
     return cUSDBalance;
   }
@@ -43,20 +42,18 @@ class CeloComposerServices {
     final balanceOf = await appKit.requestReadContract(
       deployedContract: cUSDContractAlfajores,
       topic: appKit.session!.topic,
-      chainId: ChainIds.celoAlfajores,
+      chainId: Chains.celoAlfajores.chainId,
       functionName: 'balanceOf',
       sender: senderWalletAddress,
       parameters: [senderWalletAddress],
     );
 
-    if (balanceOf.isEmpty) return double.parse('0');
+    if (balanceOf.isEmpty) return 0.0;
 
     final cUSDBalanceBigInt =
         BigInt.from(int.parse(balanceOf.first.toString()));
 
-    final cUSDBalance =
-        BigInt.from(cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
-
+    final cUSDBalance = (cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
     return cUSDBalance;
   }
 }
