@@ -52,5 +52,21 @@
 		<string>safe</string>
 		<string>rainbow</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLName</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string> <!-- Bundle ID of your app -->
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<!-- your own custom scheme -->
+		<!-- Should be the same you set on Redirect.native on Flutter side -->
+		<!-- Be mind of removing :// for this step -->
+		<string>flutter-celo-composer</string>
+		</array>
+	</dict>
+	</array>
 </dict>
 </plist>
