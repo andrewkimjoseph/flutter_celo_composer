@@ -1,21 +1,28 @@
+import 'package:flutter_celo_composer/constants/chain_ids.dart';
 import 'package:flutter_celo_composer/constants/contracts/cusd_contract_alfajores.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 import 'package:flutter_celo_composer/constants/contracts/cusd_contract_mainnet.dart';
 
 class CeloComposerServices {
-  static BigInt cUSDDecimalPlaces = BigInt.from(1000000000000000000);
+  final ReownAppKitModal appKit;
+  final EthereumAddress senderWalletAddress;
+  static final BigInt cUSDDecimalPlaces = BigInt.from(1000000000000000000);
 
-  static Future<double> checkcUSDBalanceMainnet(
-      ReownAppKitModal appKitModal) async {
-    final balanceOf = await appKitModal.requestReadContract(
+  CeloComposerServices(this.appKit)
+      : senderWalletAddress = EthereumAddress.fromHex(
+            appKit.session?.getAddress(NetworkUtils.eip155) ?? '');
+
+  Future<double> checkcUSDBalanceOnMainnet() async {
+    final senderWalletAddress = EthereumAddress.fromHex(
+        appKit.session!.getAddress(NetworkUtils.eip155)!);
+
+    final balanceOf = await appKit.requestReadContract(
       deployedContract: cUSDContractMainnet,
-      topic: appKitModal.session!.topic,
-      chainId: appKitModal.selectedChain!.chainId,
+      topic: appKit.session!.topic,
+      chainId: ChainIds.celoMainnet,
+      sender: senderWalletAddress,
       functionName: 'balanceOf',
-      parameters: [
-        EthereumAddress.fromHex(
-            appKitModal.session!.getAddress(NetworkUtils.eip155)!),
-      ],
+      parameters: [senderWalletAddress],
     );
 
     if (balanceOf.isEmpty) return double.parse('0');
@@ -29,17 +36,17 @@ class CeloComposerServices {
     return cUSDBalance;
   }
 
-  static Future<double> checkcUSDBalanceAlfajores(
-      ReownAppKitModal appKitModal) async {
-    final balanceOf = await appKitModal.requestReadContract(
+  Future<double> checkcUSDBalanceOnAlfajores() async {
+    final senderWalletAddress = EthereumAddress.fromHex(
+        appKit.session!.getAddress(NetworkUtils.eip155)!);
+
+    final balanceOf = await appKit.requestReadContract(
       deployedContract: cUSDContractAlfajores,
-      topic: appKitModal.session!.topic,
-      chainId: appKitModal.selectedChain!.chainId,
+      topic: appKit.session!.topic,
+      chainId: ChainIds.celoAlfajores,
       functionName: 'balanceOf',
-      parameters: [
-        EthereumAddress.fromHex(
-            appKitModal.session!.getAddress(NetworkUtils.eip155)!),
-      ],
+      sender: senderWalletAddress,
+      parameters: [senderWalletAddress],
     );
 
     if (balanceOf.isEmpty) return double.parse('0');
