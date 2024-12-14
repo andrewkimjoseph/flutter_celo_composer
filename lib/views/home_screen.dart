@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_celo_composer/services/celo_composer_services.dart';
+import 'package:flutter_celo_composer/widgets/custom_alert.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:reown_appkit/appkit_modal.dart';
@@ -13,6 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool isCheckingBalance = false;
   @override
   void initState() {
     super.initState();
@@ -100,15 +103,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ],
                   )),
 
-              // ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (context) => const AnotherScreen()),
-              //       );
-              //     },
-              //     child: const Text("Go to another screen"))
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        isCheckingBalance = true;
+                      });
+                      double balance =
+                          await CeloComposerServices.checkcUSDBalanceAlfajores(
+                              appKitModalState.modal);
+
+                      debugPrint("cUSD Balance on Alfajores: $balance cUSD");
+
+                      if (mounted) {
+                        setState(() {
+                          isCheckingBalance = false;
+                        });
+
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustomPopUpWidget(
+                                popUpTitle: 'cUSD Balance on Alfajores',
+                                popUpText: '$balance cUSD',
+                              );
+                            });
+                      }
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const AnotherScreen()),
+                      // );
+                    },
+                    child: isCheckingBalance
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                            ))
+                        : const Text("Check cUSD balance on Alfajores")),
+              )
             ],
           ),
         ),
