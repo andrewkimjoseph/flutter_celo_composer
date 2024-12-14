@@ -67,6 +67,12 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
 
         state = state.copyWith(isInitialized: true);
 
+        if (state.modal.isConnected) {
+          state = state.copyWith(isInitialized: true, isConnected: true);
+        } else {
+          state = state.copyWith(isInitialized: true);
+        }
+
         if (kDebugMode) {
           debugPrint("🟢 Kit initialized successfully.");
         }
