@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_celo_composer/constants/chains.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -122,10 +124,10 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
     ReownAppKitModalNetworks.addSupportedNetworks('eip155', [
       ReownAppKitModalNetworkInfo(
         name: 'Celo Alfajores Testnet',
-        chainId: '44787',
+        chainId: Chains.celoAlfajores.chainId,
         currency: 'CELO',
-        rpcUrl: 'https://alfajores-forno.celo-testnet.org',
-        explorerUrl: 'https://celo-alfajores.blockscout.com/',
+        rpcUrl: Chains.celoAlfajores.rpcURL,
+        explorerUrl: Chains.celoAlfajores.explorerURL,
       ),
     ]);
   }
