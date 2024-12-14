@@ -1,4 +1,4 @@
-const cUSDContractABI = [
+final List<Map<String, Object>> cUSDContractABI = [
   {
     "constant": true,
     "inputs": [],
