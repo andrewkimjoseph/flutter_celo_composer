@@ -130,12 +130,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               );
                             });
                       }
-
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const AnotherScreen()),
-                      // );
                     },
                     child: isCheckingBalance
                         ? const SizedBox(
