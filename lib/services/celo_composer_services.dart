@@ -3,7 +3,9 @@ import 'package:reown_appkit/reown_appkit.dart';
 import 'package:flutter_celo_composer/constants/contracts/cusd_contract_mainnet.dart';
 
 class CeloComposerServices {
-  static Future<BigInt> checkcUSDBalanceMainnet(
+  static BigInt cUSDDecimalPlaces = BigInt.from(1000000000000000000);
+
+  static Future<double> checkcUSDBalanceMainnet(
       ReownAppKitModal appKitModal) async {
     final balanceOf = await appKitModal.requestReadContract(
       deployedContract: cUSDContractMainnet,
@@ -16,14 +18,18 @@ class CeloComposerServices {
       ],
     );
 
-    if (balanceOf.isEmpty) return BigInt.from(0);
+    if (balanceOf.isEmpty) return double.parse('0');
 
-    final cUSDBalance = BigInt.from(balanceOf[0]);
+    final cUSDBalanceBigInt =
+        BigInt.from(int.parse(balanceOf.first.toString()));
+
+    final cUSDBalance =
+        BigInt.from(cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
 
     return cUSDBalance;
   }
 
-  static Future<BigInt> checkcUSDBalanceAlfajores(
+  static Future<double> checkcUSDBalanceAlfajores(
       ReownAppKitModal appKitModal) async {
     final balanceOf = await appKitModal.requestReadContract(
       deployedContract: cUSDContractAlfajores,
@@ -36,12 +42,14 @@ class CeloComposerServices {
       ],
     );
 
-    if (balanceOf.isEmpty) return BigInt.from(0);
+    if (balanceOf.isEmpty) return double.parse('0');
 
-    final cUSDBalance = BigInt.from(balanceOf[0]);
+    final cUSDBalanceBigInt =
+        BigInt.from(int.parse(balanceOf.first.toString()));
+
+    final cUSDBalance =
+        BigInt.from(cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
 
     return cUSDBalance;
   }
 }
-
-final celoComposerServices = CeloComposerServices();
