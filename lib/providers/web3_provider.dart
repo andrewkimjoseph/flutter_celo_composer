@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/reown_appkit.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppKitModalState {
   final ReownAppKitModal modal;
@@ -39,7 +40,7 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
   static ReownAppKitModal _create(BuildContext context) {
     return ReownAppKitModal(
       context: context,
-      projectId: 'b7fc418c37aea6c627ea82b4f2c8f1e3',
+      projectId: dotenv.env['REOWN_PROJECT_ID'],
       metadata: const PairingMetadata(
         name: 'Flutter Celo Composer',
         description: 'A Composer for Flutter Web3 dApps',
@@ -64,8 +65,6 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
         }
 
         await state.modal.init();
-
-        state = state.copyWith(isInitialized: true);
 
         if (state.modal.isConnected) {
           state = state.copyWith(isInitialized: true, isConnected: true);
@@ -100,13 +99,7 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
       debugPrint("🟢 Modal connected");
     }
 
-    // Close the modal after connection
-    state.modal.closeModal();
-
-    state = state.copyWith(
-        isConnected: true,
-        // Optionally reset initialization if needed
-        isInitialized: true);
+    state = state.copyWith(isConnected: true);
   }
 
   void _onModalDisconnect(ModalDisconnect? event) {
