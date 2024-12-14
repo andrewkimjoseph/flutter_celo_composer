@@ -41,12 +41,12 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
     return ReownAppKitModal(
       context: context,
       projectId: dotenv.env['REOWN_PROJECT_ID'],
-      metadata: const PairingMetadata(
+      metadata: PairingMetadata(
         name: 'Flutter Celo Composer',
         description: 'A Composer for Flutter Web3 dApps',
-        url: 'https://andrewkimjoseph.xyz/',
+        url: dotenv.env['URL']!,
         icons: ['https://example.com/logo.png'],
-        redirect: Redirect(
+        redirect: const Redirect(
           native: 'flutter-celo-composer://',
           linkMode: true,
         ),
