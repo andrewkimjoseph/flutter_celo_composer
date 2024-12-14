@@ -27,4 +27,6 @@ class Chains {
       currencySymbol: 'CELO',
       rpcURL: "https://celo-alfajores.blockscout.com/",
       explorerURL: "https://alfajores-forno.celo-testnet.org");
+
+  // Add other chains here
 }
