@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConnectText extends ConsumerStatefulWidget {
   const ConnectText(
-      {super.key, required this.isInitialized, required this.isConnected});
+      {super.key,
+      required this.kitIsInitialized,
+      required this.walletIsConnected});
 
-  final bool isInitialized;
-  final bool isConnected;
+  final bool kitIsInitialized;
+  final bool walletIsConnected;
 
   @override
   ConsumerState<ConnectText> createState() => _ConnectTextState();
@@ -15,16 +17,15 @@ class ConnectText extends ConsumerStatefulWidget {
 class _ConnectTextState extends ConsumerState<ConnectText> {
   @override
   Widget build(BuildContext context) {
-    if (widget.isInitialized) {
+    if (widget.kitIsInitialized) {
       return Text(
-        widget.isConnected ? "Connected" : "Connect your wallet",
+        widget.walletIsConnected ? "Connected" : "Connect your wallet",
         style: TextStyle(
           fontSize: 16,
-          color: widget.isConnected ? Colors.green : Colors.red,
+          color: widget.walletIsConnected ? Colors.green : Colors.red,
         ),
       );
-    } else {
-      return const SizedBox.shrink();
     }
+    return const SizedBox.shrink();
   }
 }
