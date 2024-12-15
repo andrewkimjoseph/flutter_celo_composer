@@ -1,11 +1,11 @@
-class ChainInfo {
+class Chain {
   final String name;
   final String chainId;
   final String currencySymbol;
   final String rpcURL;
   final String explorerURL;
 
-  const ChainInfo(
+  const Chain(
       {required this.name,
       required this.chainId,
       required this.currencySymbol,
@@ -14,14 +14,14 @@ class ChainInfo {
 }
 
 class Chains {
-  static ChainInfo celoMainnet = const ChainInfo(
+  static Chain celoMainnet = const Chain(
       name: 'Celo Mainnet',
       chainId: '42220',
       currencySymbol: 'CELO',
       rpcURL: "https://forno.celo.org",
       explorerURL: "https://celoscan.io/");
 
-  static ChainInfo celoAlfajores = const ChainInfo(
+  static Chain celoAlfajores = const Chain(
       name: 'Celo Alfajores Testnet',
       chainId: '44787',
       currencySymbol: 'CELO',
