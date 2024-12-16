@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-ThemeData _buildTheme(brightness) {
+ThemeData _buildTheme(Brightness brightness) {
   var baseTheme = ThemeData(brightness: brightness);
 
   return baseTheme.copyWith(
