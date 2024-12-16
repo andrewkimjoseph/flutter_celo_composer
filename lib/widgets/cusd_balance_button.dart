@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_celo_composer/chains/chains.dart';
 import 'package:flutter_celo_composer/widgets/progress_indicator.dart';
 import 'package:reown_appkit/appkit_modal.dart';
 
@@ -50,11 +51,25 @@ class _CUSDBalanceButtonState extends State<CUSDBalanceButton> {
     });
 
     try {
+      // Validate the selected chain matches the intended network
+      final selectedChainId = widget.appKit.selectedChain?.chainId;
+      final isNetworkMismatched = widget.forTestnet
+          ? selectedChainId != Chains.celoAlfajores.chainId
+          : selectedChainId != Chains.celoMainnet.chainId;
+
+      if (isNetworkMismatched) {
+        // Show an error if the network doesn't match the intended network
+        _showErrorSnackbar(widget.forTestnet
+            ? 'Please switch to Celo Alfajores first.'
+            : 'Please switch to Celo Mainnet first.');
+        return;
+      }
+
       double balance = widget.forTestnet
           ? await _celoComposerServices.checkcUSDBalanceOnAlfajores()
           : await _celoComposerServices.checkcUSDBalanceOnMainnet();
 
-      debugPrint("cUSD Balance: $balance cUSD");
+      debugPrint('cUSD Balance: $balance cUSD.');
       _showBalanceSnackbar(balance);
     } catch (e) {
       _showErrorSnackbar(e.toString());
@@ -71,7 +86,7 @@ class _CUSDBalanceButtonState extends State<CUSDBalanceButton> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'cUSD Balance: $balance cUSD',
+          'cUSD Balance: $balance cUSD.',
           style: const TextStyle(color: Colors.black),
         ),
         duration: const Duration(seconds: 3),
