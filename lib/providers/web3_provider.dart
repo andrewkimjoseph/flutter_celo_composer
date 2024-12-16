@@ -121,7 +121,7 @@ class AppKitModalNotifier extends StateNotifier<AppKitModalState> {
   }
 
   void _addSupportedNetworks() {
-    ReownAppKitModalNetworks.addSupportedNetworks('eip155', [
+    ReownAppKitModalNetworks.addSupportedNetworks(NetworkUtils.eip155, [
       ReownAppKitModalNetworkInfo(
         name: 'Celo Alfajores Testnet',
         chainId: Chains.celoAlfajores.chainId,
