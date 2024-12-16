@@ -51,14 +51,12 @@ class _CUSDBalanceButtonState extends State<CUSDBalanceButton> {
     });
 
     try {
-      // Validate the selected chain matches the intended network
       final selectedChainId = widget.appKit.selectedChain?.chainId;
       final isNetworkMismatched = widget.forTestnet
           ? selectedChainId != Chains.celoAlfajores.chainId
           : selectedChainId != Chains.celoMainnet.chainId;
 
       if (isNetworkMismatched) {
-        // Show an error if the network doesn't match the intended network
         _showErrorSnackbar(widget.forTestnet
             ? 'Please switch to Celo Alfajores first.'
             : 'Please switch to Celo Mainnet first.');
