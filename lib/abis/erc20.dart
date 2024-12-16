@@ -1,4 +1,4 @@
-final List<Map<String, Object>> cUSDContractABI = [
+final List<Map<String, Object>> erc20ABI = [
   {
     "constant": true,
     "inputs": [],

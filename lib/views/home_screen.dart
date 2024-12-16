@@ -4,7 +4,7 @@ import 'package:flutter_celo_composer/widgets/connect_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/appkit_modal.dart';
 import '../providers/web3_provider.dart';
-import '../widgets/cusd_alfajores_balance_button.dart';
+import '../widgets/cusd_balance_button.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/progress_indicator.dart';
 

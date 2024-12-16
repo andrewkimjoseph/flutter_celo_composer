@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_celo_composer/constants/chains.dart';
+import 'package:flutter_celo_composer/chains/chains.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/reown_appkit.dart';

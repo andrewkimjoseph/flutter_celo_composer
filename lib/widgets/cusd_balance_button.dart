@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_celo_composer/widgets/progress_indicator.dart';
 import 'package:reown_appkit/appkit_modal.dart';
 
-import '../services/celo_composer_services.dart';
+import '../services/web3_services.dart';
 
 class CUSDBalanceButton extends StatefulWidget {
   const CUSDBalanceButton({
@@ -20,7 +20,7 @@ class CUSDBalanceButton extends StatefulWidget {
 
 class _CUSDBalanceButtonState extends State<CUSDBalanceButton> {
   bool isCheckingBalance = false;
-  late CeloComposerServices _celoComposerServices;
+  late Web3Services _celoComposerServices;
 
   final String btnTextForAlfajores = "Check cUSD Balance on Alfajores";
   final String btnTextForMainnet = "Check cUSD Balance on Mainnet";
@@ -28,7 +28,7 @@ class _CUSDBalanceButtonState extends State<CUSDBalanceButton> {
   @override
   void initState() {
     super.initState();
-    _celoComposerServices = CeloComposerServices(widget.appKit);
+    _celoComposerServices = Web3Services(widget.appKit);
   }
 
   @override

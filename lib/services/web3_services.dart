@@ -1,14 +1,13 @@
-import 'package:flutter_celo_composer/constants/chains.dart';
-import 'package:flutter_celo_composer/constants/contracts/cusd_contract_alfajores.dart';
+import 'package:flutter_celo_composer/chains/chains.dart';
+import 'package:flutter_celo_composer/contracts/stablecoins/stablecoins.dart';
 import 'package:reown_appkit/reown_appkit.dart';
-import 'package:flutter_celo_composer/constants/contracts/cusd_contract_mainnet.dart';
 
-class CeloComposerServices {
+class Web3Services {
   final ReownAppKitModal appKit;
   final EthereumAddress senderWalletAddress;
   static final BigInt cUSDDecimalPlaces = BigInt.from(1000000000000000000);
 
-  CeloComposerServices(this.appKit)
+  Web3Services(this.appKit)
       : senderWalletAddress = EthereumAddress.fromHex(
             appKit.session?.getAddress(NetworkUtils.eip155) ?? '');
 
@@ -17,7 +16,7 @@ class CeloComposerServices {
         appKit.session!.getAddress(NetworkUtils.eip155)!);
 
     final balanceOf = await appKit.requestReadContract(
-      deployedContract: cUSDContractMainnet,
+      deployedContract: StablecoinContracts.cUSDMainnet,
       topic: appKit.session!.topic,
       chainId: Chains.celoMainnet.chainId,
       sender: senderWalletAddress,
@@ -40,7 +39,7 @@ class CeloComposerServices {
         appKit.session!.getAddress(NetworkUtils.eip155)!);
 
     final balanceOf = await appKit.requestReadContract(
-      deployedContract: cUSDContractAlfajores,
+      deployedContract: StablecoinContracts.cUSDAlfajores,
       topic: appKit.session!.topic,
       chainId: Chains.celoAlfajores.chainId,
       functionName: 'balanceOf',
