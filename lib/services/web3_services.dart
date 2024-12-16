@@ -55,4 +55,6 @@ class Web3Services {
     final cUSDBalance = (cUSDBalanceBigInt / cUSDDecimalPlaces).toDouble();
     return cUSDBalance;
   }
+
+  // Add other services here
 }
