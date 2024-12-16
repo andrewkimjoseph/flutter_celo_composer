@@ -25,8 +25,8 @@ class Chains {
       name: 'Celo Alfajores Testnet',
       chainId: '44787',
       currencySymbol: 'CELO',
-      rpcURL: "https://celo-alfajores.blockscout.com/",
-      explorerURL: "https://alfajores-forno.celo-testnet.org");
+      rpcURL: "https://alfajores-forno.celo-testnet.org",
+      explorerURL: "https://celo-alfajores.blockscout.com/");
 
   // Add other chains here
 }
