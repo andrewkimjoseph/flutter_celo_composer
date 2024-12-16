@@ -16,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         semanticsLabel: 'Celo Logo',
         width: 100,
       ),
+      centerTitle: true,
       actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),
